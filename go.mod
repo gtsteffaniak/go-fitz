@@ -1,4 +1,4 @@
-module github.com/gen2brain/go-fitz
+module github.com/gtsteffaniak/go-fitz
 
 go 1.24.0
 
