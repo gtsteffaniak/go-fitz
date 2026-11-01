@@ -1,0 +1,32 @@
+{
+  "_comment": "Expected outcome per (asset, method) for the pure Go port. Statuses: supported, typed_unsupported, mismatch, error, skipped. The gate fails on any status that differs from expect, including a typed_unsupported case that starts passing.",
+  "mupdfVersion": "1.28.0",
+  "mupdfCommit": "205b8cf43551279d1215e88fe2845c5d595bade9",
+  "scope": "pdf",
+  "methods": [
+    "NumPage",
+    "Bound",
+    "Metadata",
+    "Links",
+    "ToC",
+    "Text",
+    "HTML",
+    "SVG",
+    "Image",
+    "ImageDPI",
+    "ImagePNG"
+  ],
+  "cases": [
+    { "asset": "testdata/test.pdf", "method": "NumPage", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "Bound", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "Metadata", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "Links", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "ToC", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "Text", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "HTML", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "SVG", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "Image", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "ImageDPI", "expect": "typed_unsupported", "reason": "pure backend not implemented" },
+    { "asset": "testdata/test.pdf", "method": "ImagePNG", "expect": "typed_unsupported", "reason": "pure backend not implemented" }
+  ]
+}

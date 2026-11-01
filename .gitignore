@@ -1,0 +1,6 @@
+# Pinned MuPDF source used as the porting reference (scripts/fetch-mupdf-source.sh)
+.mupdf-src/
+
+# Reference build artifacts for the compare harness (test/reference)
+test/reference/download/
+test/reference/build/
