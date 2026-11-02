@@ -14,7 +14,7 @@ import (
 	"os"
 	"strings"
 
-	fitz "github.com/gtsteffaniak/go-fitz"
+	fitz "github.com/gtsteffaniak/go-fitz/pkg/fitz"
 )
 
 // Result is the reference output for one document.

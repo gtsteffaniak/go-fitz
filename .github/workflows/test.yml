@@ -53,5 +53,5 @@ jobs:
         run: go test -count=1 ./internal/... ./test/...
       - name: Golden drift against cgo reference
         run: |
-          go run ./cmd/fitz-compare testdata/test.pdf > "$RUNNER_TEMP/test.pdf.json"
+          go run ./cmd/fitz-compare pkg/fitz/testdata/test.pdf > "$RUNNER_TEMP/test.pdf.json"
           diff -u test/compare/golden/test.pdf.json "$RUNNER_TEMP/test.pdf.json"

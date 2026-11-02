@@ -17,16 +17,16 @@
     "ImagePNG"
   ],
   "cases": [
-    { "asset": "testdata/test.pdf", "method": "NumPage", "expect": "supported" },
-    { "asset": "testdata/test.pdf", "method": "Bound", "expect": "supported" },
-    { "asset": "testdata/test.pdf", "method": "Metadata", "expect": "supported" },
-    { "asset": "testdata/test.pdf", "method": "Links", "expect": "typed_unsupported", "reason": "link annotation parsing not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "ToC", "expect": "typed_unsupported", "reason": "outline and names tree resolution not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "Text", "expect": "typed_unsupported", "reason": "fonts and stext device not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "HTML", "expect": "typed_unsupported", "reason": "fonts and stext device not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "SVG", "expect": "typed_unsupported", "reason": "rendering device not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "Image", "expect": "typed_unsupported", "reason": "rasteriser not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "ImageDPI", "expect": "typed_unsupported", "reason": "rasteriser not ported yet" },
-    { "asset": "testdata/test.pdf", "method": "ImagePNG", "expect": "typed_unsupported", "reason": "rasteriser not ported yet" }
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "NumPage", "expect": "supported" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "Bound", "expect": "supported" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "Metadata", "expect": "supported" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "Links", "expect": "typed_unsupported", "reason": "link annotation parsing not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "ToC", "expect": "typed_unsupported", "reason": "outline and names tree resolution not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "Text", "expect": "typed_unsupported", "reason": "fonts and stext device not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "HTML", "expect": "typed_unsupported", "reason": "fonts and stext device not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "SVG", "expect": "typed_unsupported", "reason": "rendering device not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "Image", "expect": "typed_unsupported", "reason": "rasteriser not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "ImageDPI", "expect": "typed_unsupported", "reason": "rasteriser not ported yet" },
+    { "asset": "pkg/fitz/testdata/test.pdf", "method": "ImagePNG", "expect": "typed_unsupported", "reason": "rasteriser not ported yet" }
   ]
 }

@@ -9,7 +9,7 @@ import (
 
 func openFixture(t *testing.T, name string) *Document {
 	t.Helper()
-	data, err := os.ReadFile("../../../testdata/" + name)
+	data, err := os.ReadFile("../../../pkg/fitz/testdata/" + name)
 	if err != nil {
 		t.Fatalf("read fixture: %v", err)
 	}
@@ -21,7 +21,7 @@ func openFixture(t *testing.T, name string) *Document {
 }
 
 // TestTestPDFStructure checks the structure layer against the reference
-// output recorded from the cgo wrapper (cmd/fitz-compare on testdata/test.pdf).
+// output recorded from the cgo wrapper (cmd/fitz-compare on pkg/fitz/testdata/test.pdf).
 func TestTestPDFStructure(t *testing.T) {
 	doc := openFixture(t, "test.pdf")
 

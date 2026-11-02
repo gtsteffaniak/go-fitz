@@ -1,9 +1,20 @@
 ## go-fitz
 [![Build Status](https://github.com/gtsteffaniak/go-fitz/actions/workflows/test.yml/badge.svg)](https://github.com/gtsteffaniak/go-fitz/actions)
-[![GoDoc](https://godoc.org/github.com/gtsteffaniak/go-fitz?status.svg)](https://godoc.org/github.com/gtsteffaniak/go-fitz)
+[![GoDoc](https://godoc.org/github.com/gtsteffaniak/go-fitz/pkg/fitz?status.svg)](https://godoc.org/github.com/gtsteffaniak/go-fitz/pkg/fitz)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gtsteffaniak/go-fitz?branch=main)](https://goreportcard.com/report/github.com/gtsteffaniak/go-fitz)
 
 Go wrapper for [MuPDF](http://mupdf.com/) fitz library that can extract pages from PDF, EPUB, MOBI, DOCX, XLSX and PPTX documents as IMG, TXT, HTML or SVG.
+
+### Import path
+
+The public package lives at `github.com/gtsteffaniak/go-fitz/pkg/fitz`. Earlier versions exposed it at the module root (`github.com/gtsteffaniak/go-fitz`); update imports to the new path.
+
+### Layout
+
+* `pkg/fitz` - public cgo and purego wrapper, with bundled MuPDF `libs/`, `include/` and `testdata/`
+* `internal/` - private pure Go PDF port (`internal/mupdf/pdf`)
+* `cmd/` - developer tools (`fitz-compare`, `fitz-report`)
+* `test/` - comparison harness and golden files
 
 ### Build tags
 
@@ -31,7 +42,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/gtsteffaniak/go-fitz"
+	"github.com/gtsteffaniak/go-fitz/pkg/fitz"
 )
 
 func main() {

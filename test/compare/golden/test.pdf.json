@@ -1,6 +1,6 @@
 [
   {
-    "file": "testdata/test.pdf",
+    "file": "pkg/fitz/testdata/test.pdf",
     "numPage": 84,
     "bounds": [
       [

@@ -3,7 +3,7 @@
 package fitz
 
 import (
-	_ "github.com/gtsteffaniak/go-fitz/include/mupdf"
-	_ "github.com/gtsteffaniak/go-fitz/include/mupdf/fitz"
-	_ "github.com/gtsteffaniak/go-fitz/libs"
+	_ "github.com/gtsteffaniak/go-fitz/pkg/fitz/include/mupdf"
+	_ "github.com/gtsteffaniak/go-fitz/pkg/fitz/include/mupdf/fitz"
+	_ "github.com/gtsteffaniak/go-fitz/pkg/fitz/libs"
 )

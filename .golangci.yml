@@ -1,6 +1,6 @@
 # golangci-lint v2 configuration. CI pins the same version (see
-# .github/workflows/pure-go-port.yml). Scope: the pure Go port and its
-# tooling. The cgo wrapper at the module root is outside this gate until it
+# .github/workflows/test.yml). Scope: the pure Go port and its
+# tooling. The cgo wrapper in pkg/fitz is outside this gate until it
 # is removed.
 version: "2"
 

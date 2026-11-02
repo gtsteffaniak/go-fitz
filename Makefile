@@ -1,7 +1,7 @@
 # go-fitz developer targets. Run `make help` for the list.
 #
 # The pure Go port (internal/mupdf/pdf) and its tests build without cgo.
-# The reference wrapper at the module root and cmd/fitz-compare use cgo and
+# The reference wrapper in pkg/fitz and cmd/fitz-compare use cgo and
 # the bundled MuPDF static libraries.
 
 GO ?= go
@@ -14,7 +14,7 @@ TOOLS := ./cmd/...
 REPORT_SITE ?= test/compare/report_site
 REPORT_PORT ?= 8765
 GOLDEN := test/compare/golden/test.pdf.json
-REFERENCE_PDF := testdata/test.pdf
+REFERENCE_PDF := pkg/fitz/testdata/test.pdf
 
 .DEFAULT_GOAL := help
 .PHONY: help build fmt fmt-check lint test race wrapper-test \
@@ -46,8 +46,8 @@ test: ## Unit tests and the compare gate tests (no cgo)
 race: ## Tests under the race detector (requires cgo for -race)
 	CGO_ENABLED=1 $(GO) test -race -count=1 $(PACKAGES)
 
-wrapper-test: ## Tests for the cgo reference wrapper at the module root (slow)
-	$(GO) test -race -count=1 -timeout 10m .
+wrapper-test: ## Tests for the cgo reference wrapper in pkg/fitz (slow)
+	$(GO) test -race -count=1 -timeout 10m ./pkg/...
 
 compare: ## Write the comparison report and fail on any non-green case
 	CGO_ENABLED=0 $(GO) run ./cmd/fitz-report -gate
