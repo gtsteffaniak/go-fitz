@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T15:29:05Z",
+  "generated": "2026-11-02T16:36:18Z",
   "mupdf": {
     "version": "1.28.0",
     "commit": "205b8cf43551279d1215e88fe2845c5d595bade9"
@@ -15,7 +15,7 @@
   },
   "results": [
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "NumPage",
       "expect": "supported",
       "status": "pass",
@@ -23,7 +23,7 @@
       "want": 84
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "Bound",
       "expect": "supported",
       "status": "pass",
@@ -1041,7 +1041,7 @@
       ]
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "Metadata",
       "expect": "supported",
       "status": "pass",
@@ -1071,7 +1071,7 @@
       }
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "Links",
       "expect": "typed_unsupported",
       "reason": "link annotation parsing not ported yet",
@@ -1079,7 +1079,7 @@
       "detail": "pdf: unsupported feature: links"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "ToC",
       "expect": "typed_unsupported",
       "reason": "outline and names tree resolution not ported yet",
@@ -1087,7 +1087,7 @@
       "detail": "pdf: unsupported feature: table of contents"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "Text",
       "expect": "typed_unsupported",
       "reason": "fonts and stext device not ported yet",
@@ -1095,7 +1095,7 @@
       "detail": "pdf: unsupported feature: Text"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "HTML",
       "expect": "typed_unsupported",
       "reason": "fonts and stext device not ported yet",
@@ -1103,7 +1103,7 @@
       "detail": "pdf: unsupported feature: HTML"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "SVG",
       "expect": "typed_unsupported",
       "reason": "rendering device not ported yet",
@@ -1111,7 +1111,7 @@
       "detail": "pdf: unsupported feature: SVG"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "Image",
       "expect": "typed_unsupported",
       "reason": "rasteriser not ported yet",
@@ -1119,7 +1119,7 @@
       "detail": "pdf: unsupported feature: Image"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "ImageDPI",
       "expect": "typed_unsupported",
       "reason": "rasteriser not ported yet",
@@ -1127,7 +1127,7 @@
       "detail": "pdf: unsupported feature: ImageDPI"
     },
     {
-      "asset": "testdata/test.pdf",
+      "asset": "pkg/fitz/testdata/test.pdf",
       "method": "ImagePNG",
       "expect": "typed_unsupported",
       "reason": "rasteriser not ported yet",
