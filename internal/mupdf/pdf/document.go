@@ -123,7 +123,7 @@ func (d *Document) Info() map[string]string {
 	return out
 }
 
-// Metadata returns the same keys as the fitz wrapper's Metadata method.
+// Metadata returns the same keys as the public fitz package Metadata method.
 // Values are trimmed text strings; missing Info keys are empty strings.
 func (d *Document) Metadata() map[string]string {
 	info := d.Info()
@@ -149,7 +149,7 @@ func (d *Document) Metadata() map[string]string {
 // ErrPageMissing is returned for a page index outside the document.
 var ErrPageMissing = fmt.Errorf("pdf: page missing")
 
-// Bound returns the page bounds the wrapper's Bound method reports, with
+// Bound returns the page bounds the public fitz package Bound method reports, with
 // the same integer truncation.
 func (d *Document) Bound(pageNumber int) (image.Rectangle, error) {
 	p, ok := d.page(pageNumber)

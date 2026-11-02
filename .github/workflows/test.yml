@@ -34,7 +34,7 @@ jobs:
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.15.0
-          args: --config .golangci.yml ./internal/... ./test/... ./cmd/...
+          args: --config .golangci.yml ./internal/... ./pkg/... ./test/... ./cmd/...
   test:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
@@ -50,8 +50,11 @@ jobs:
       - name: Test pure packages without cgo
         env:
           CGO_ENABLED: "0"
-        run: go test -count=1 ./internal/... ./test/...
+        run: go test -count=1 ./internal/... ./pkg/... ./test/...
       - name: Golden drift against cgo reference
+        # The reference is a separate module (test/reference) that depends on
+        # gen2brain/go-fitz. Only this step needs cgo.
         run: |
-          go run ./cmd/fitz-compare testdata/test.pdf > "$RUNNER_TEMP/test.pdf.json"
+          (cd test/reference && go build -o "$RUNNER_TEMP/fitz-compare" .)
+          "$RUNNER_TEMP/fitz-compare" pkg/fitz/testdata/test.pdf > "$RUNNER_TEMP/test.pdf.json"
           diff -u test/compare/golden/test.pdf.json "$RUNNER_TEMP/test.pdf.json"
