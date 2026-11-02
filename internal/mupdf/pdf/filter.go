@@ -85,7 +85,7 @@ func inflate(data []byte) ([]byte, error) {
 	if err != nil {
 		return nil, corrupt("flate header: %v", err)
 	}
-	defer r.Close()
+	defer func() { _ = r.Close() }()
 	out, err := io.ReadAll(r)
 	if err != nil && len(out) == 0 {
 		return nil, corrupt("flate data: %v", err)

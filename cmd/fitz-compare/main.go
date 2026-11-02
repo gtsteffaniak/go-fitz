@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	fitz "github.com/gtsteffaniak/go-fitz"
 )
@@ -35,22 +36,27 @@ func dump(path string) Result {
 		res.Error = err.Error()
 		return res
 	}
-	defer doc.Close()
+	defer func() { _ = doc.Close() }()
 
 	res.NumPage = doc.NumPage()
+	// The wrapper pads each value with NULs to a 256-byte buffer. The gate
+	// compares trimmed values, so trim here and document the deviation.
 	res.Metadata = doc.Metadata()
+	for k, v := range res.Metadata {
+		res.Metadata[k] = strings.TrimRight(v, "\x00")
+	}
 
 	for i := 0; i < res.NumPage; i++ {
-		r, err := doc.Bound(i)
-		if err != nil {
-			res.Error = fmt.Sprintf("bound page %d: %v", i, err)
+		bounds, berr := doc.Bound(i)
+		if berr != nil {
+			res.Error = fmt.Sprintf("bound page %d: %v", i, berr)
 			return res
 		}
-		res.Bounds = append(res.Bounds, [4]int{r.Min.X, r.Min.Y, r.Max.X, r.Max.Y})
+		res.Bounds = append(res.Bounds, [4]int{bounds.Min.X, bounds.Min.Y, bounds.Max.X, bounds.Max.Y})
 
-		links, err := doc.Links(i)
-		if err != nil {
-			res.Error = fmt.Sprintf("links page %d: %v", i, err)
+		links, lerr := doc.Links(i)
+		if lerr != nil {
+			res.Error = fmt.Sprintf("links page %d: %v", i, lerr)
 			return res
 		}
 		res.Links = append(res.Links, links)

@@ -1,0 +1,51 @@
+# golangci-lint v2 configuration. CI pins the same version (see
+# .github/workflows/pure-go-port.yml). Scope: the pure Go port and its
+# tooling. The cgo wrapper at the module root is outside this gate until it
+# is removed.
+version: "2"
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - misspell
+    - unconvert
+    - unparam
+    - gocritic
+  settings:
+    govet:
+      enable-all: true
+      disable:
+        # Struct field order is kept for readability, not memory layout.
+        - fieldalignment
+    errcheck:
+      check-type-assertions: true
+    unparam:
+      check-exported: false
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - style
+      disabled-checks:
+        # Mirrors the MuPDF port: the C names are kept for traceability.
+        - underef
+        - ptrToRefParam
+        - singleCaseSwitch
+        - captLocal
+        - commentedOutCode
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+formatters:
+  enable:
+    - gofmt

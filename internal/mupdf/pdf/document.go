@@ -2,6 +2,8 @@ package pdf
 
 import (
 	"bytes"
+	"fmt"
+	"image"
 	"strconv"
 	"sync"
 )
@@ -111,13 +113,78 @@ func (d *Document) Info() map[string]string {
 		return out
 	}
 	for k, v := range info {
-		if s, ok := d.deref(v).(String); ok {
-			out[string(k)] = TextString(s)
-		} else if n, ok := d.deref(v).(Name); ok {
-			out[string(k)] = string(n)
+		switch val := d.deref(v).(type) {
+		case String:
+			out[string(k)] = TextString(val)
+		case Name:
+			out[string(k)] = string(val)
 		}
 	}
 	return out
+}
+
+// Metadata returns the same keys as the fitz wrapper's Metadata method.
+// Values are trimmed text strings; missing Info keys are empty strings.
+func (d *Document) Metadata() map[string]string {
+	info := d.Info()
+	get := func(key string) string { return info[key] }
+	enc := "None"
+	if d.Encrypted() {
+		enc = "Standard"
+	}
+	return map[string]string{
+		"format":       "PDF " + d.version,
+		"encryption":   enc,
+		"title":        get("Title"),
+		"author":       get("Author"),
+		"subject":      get("Subject"),
+		"keywords":     get("Keywords"),
+		"creator":      get("Creator"),
+		"producer":     get("Producer"),
+		"creationDate": get("CreationDate"),
+		"modDate":      get("ModDate"),
+	}
+}
+
+// ErrPageMissing is returned for a page index outside the document.
+var ErrPageMissing = fmt.Errorf("pdf: page missing")
+
+// Bound returns the page bounds the wrapper's Bound method reports, with
+// the same integer truncation.
+func (d *Document) Bound(pageNumber int) (image.Rectangle, error) {
+	p, ok := d.page(pageNumber)
+	if !ok {
+		return image.Rectangle{}, ErrPageMissing
+	}
+	r := pageCropBox(p)
+	return image.Rect(int(r.X0), int(r.Y0), int(r.X1), int(r.Y1)), nil
+}
+
+// Links is not implemented yet: link annotation parsing and destination
+// formatting are the next milestone. It reports ErrUnsupported so the compare
+// gate records the case as typed_unsupported.
+func (d *Document) Links(pageNumber int) ([]Link, error) {
+	return nil, unsupported("links")
+}
+
+// ToC is not implemented yet: outline parsing needs the names tree and
+// destination resolution. It reports ErrUnsupported.
+func (d *Document) ToC() ([]Outline, error) {
+	return nil, unsupported("table of contents")
+}
+
+// Link is an external link on a page.
+type Link struct {
+	URI string
+}
+
+// Outline is one entry of the table of contents.
+type Outline struct {
+	Level int
+	Title string
+	URI   string
+	Page  int
+	Top   float64
 }
 
 // Page returns the page node at index i.
@@ -345,9 +412,10 @@ func (w *pageWalker) addLeaf(node Dict, inh inherited) {
 	}
 	pn.crop = inh.crop
 	pn.rotate = inh.rotate
-	if u, ok := w.doc.deref(node[Name("UserUnit")]).(Real); ok {
+	switch u := w.doc.deref(node[Name("UserUnit")]).(type) {
+	case Real:
 		pn.userUnit = float32(u)
-	} else if u, ok := w.doc.deref(node[Name("UserUnit")]).(Integer); ok {
+	case Integer:
 		pn.userUnit = float32(u)
 	}
 	w.pages = append(w.pages, pn)

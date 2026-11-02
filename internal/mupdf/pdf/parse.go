@@ -93,7 +93,7 @@ func (p *parser) parseObject() (Object, error) {
 		p.pos++
 		return p.parseArrayBody()
 	case c == '+' || c == '-' || c == '.' || (c >= '0' && c <= '9'):
-		return p.parseNumberOrRef()
+		return p.parseNumberOrRef(), nil
 	}
 
 	tok := p.token()
@@ -113,7 +113,7 @@ func (p *parser) parseObject() (Object, error) {
 
 // parseNumberOrRef parses an integer or real, and checks for the "n g R"
 // indirect reference form when the number is a non-negative integer.
-func (p *parser) parseNumberOrRef() (Object, error) {
+func (p *parser) parseNumberOrRef() Object {
 	start := p.pos
 	tok := p.token()
 	if i, err := strconv.ParseInt(string(tok), 10, 64); err == nil {
@@ -126,21 +126,21 @@ func (p *parser) parseNumberOrRef() (Object, error) {
 				p.skipSpace()
 				if p.pos < len(p.data) && p.data[p.pos] == 'R' && (p.pos+1 >= len(p.data) || isWhite(p.data[p.pos+1]) || isDelim(p.data[p.pos+1])) {
 					p.pos++
-					return Ref{Num: int(i), Gen: int(g)}, nil
+					return Ref{Num: int(i), Gen: int(g)}
 				}
 			}
 		}
 		p.pos = save
-		return Integer(i), nil
+		return Integer(i)
 	}
 	if f, err := strconv.ParseFloat(string(tok), 64); err == nil {
-		return Real(f), nil
+		return Real(f)
 	}
 	// MuPDF tolerates malformed numbers such as "--5" or "1.2.3" by reading
 	// what it can. Reproducing that exactly is part of the repair work; for
 	// now a bad number is treated as zero, matching the lenient reads.
 	p.pos = start + len(tok)
-	return Integer(0), nil
+	return Integer(0)
 }
 
 func (p *parser) parseName() Name {
@@ -408,7 +408,7 @@ func parseIndirectAt(data []byte, offset int, resolve func(Ref) (Object, error),
 		return nil, corrupt("object %d found at offset %d, expected %d", num, offset, want)
 	}
 	p.skipSpace()
-	if _, err := strconv.Atoi(string(p.token())); err != nil {
+	if _, gerr := strconv.Atoi(string(p.token())); gerr != nil {
 		return nil, corrupt("bad generation for object %d", num)
 	}
 	p.skipSpace()

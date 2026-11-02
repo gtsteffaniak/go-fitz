@@ -191,7 +191,7 @@ func pageCropBox(p pageNode) Rect {
 		rotate = 360 - ((-rotate) % 360)
 	}
 	if rotate >= 360 {
-		rotate = rotate % 360
+		rotate %= 360
 	}
 	rotate = 90 * ((rotate + 45) / 90)
 	if rotate >= 360 {
