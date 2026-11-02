@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>go-fitz pure Go port vs MuPDF comparison</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>go-fitz pure Go port vs MuPDF</h1>
+    <p id="meta">Loading report…</p>
+    <p id="build-meta" class="sub-meta"></p>
+  </header>
+
+  <main>
+    <section class="cards" id="summary-cards" aria-live="polite"></section>
+
+    <section class="controls" aria-label="Filter results">
+      <div class="filter" role="group" aria-label="Filter by status">
+        <button type="button" data-filter="all" class="is-active">All</button>
+        <button type="button" data-filter="failing">Failing</button>
+        <button type="button" data-filter="pass">Pass</button>
+        <button type="button" data-filter="typed_unsupported">Typed unsupported</button>
+      </div>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Asset</th>
+          <th scope="col">Method</th>
+          <th scope="col">Expected</th>
+          <th scope="col">Status</th>
+          <th scope="col">Detail</th>
+        </tr>
+      </thead>
+      <tbody id="results"></tbody>
+    </table>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
