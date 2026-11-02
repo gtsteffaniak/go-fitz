@@ -4,36 +4,21 @@ on:
   pull_request:
     branches:
       - "**"
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
 
 jobs:
-  test-go:
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-      - name: Test
-        run: go test -race -v ./... -timeout 10m
-  lint-go:
+  lint:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
         with:
-          go-version: 'stable'
-      - name: Lint
-        uses: golangci/golangci-lint-action@v8
-        with:
-          version: v2.15.0
-          args: --config .golangci.yml ./internal/... ./test/... ./cmd/...
-  format-go:
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
+          persist-credentials: false
       - uses: actions/setup-go@v5
         with:
           go-version: 'stable'
@@ -45,3 +30,28 @@ jobs:
             echo "$unformatted" >&2
             exit 1
           fi
+      - name: golangci-lint (includes go vet)
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.15.0
+          args: --config .golangci.yml ./internal/... ./test/... ./cmd/...
+  test:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - name: Test with race detector
+        run: go test -race -count=1 -v ./... -timeout 10m
+      - name: Test pure packages without cgo
+        env:
+          CGO_ENABLED: "0"
+        run: go test -count=1 ./internal/... ./test/...
+      - name: Golden drift against cgo reference
+        run: |
+          go run ./cmd/fitz-compare testdata/test.pdf > "$RUNNER_TEMP/test.pdf.json"
+          diff -u test/compare/golden/test.pdf.json "$RUNNER_TEMP/test.pdf.json"

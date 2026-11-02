@@ -1,7 +1,7 @@
 ## go-fitz
 [![Build Status](https://github.com/gtsteffaniak/go-fitz/actions/workflows/test.yml/badge.svg)](https://github.com/gtsteffaniak/go-fitz/actions)
 [![GoDoc](https://godoc.org/github.com/gtsteffaniak/go-fitz?status.svg)](https://godoc.org/github.com/gtsteffaniak/go-fitz)
-[![Go Report Card](https://goreportcard.com/badge/github.com/gtsteffaniak/go-fitz?branch=master)](https://goreportcard.com/report/github.com/gtsteffaniak/go-fitz)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gtsteffaniak/go-fitz?branch=main)](https://goreportcard.com/report/github.com/gtsteffaniak/go-fitz)
 
 Go wrapper for [MuPDF](http://mupdf.com/) fitz library that can extract pages from PDF, EPUB, MOBI, DOCX, XLSX and PPTX documents as IMG, TXT, HTML or SVG.
 

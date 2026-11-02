@@ -8,7 +8,7 @@ name: Publish comparison report
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
