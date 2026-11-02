@@ -1,11 +1,11 @@
 // Command fitz-compare dumps the exact-tier outputs of the reference
-// implementation (the cgo wrapper in this module) as JSON. The pure Go port
-// is checked against this output by the compare gate.
+// implementation, gen2brain/go-fitz (cgo, pinned in go.mod), as JSON. The pure
+// Go port is checked against this output by the compare gate.
 //
-// Usage: go run ./cmd/fitz-compare <file.pdf> [more.pdf ...]
+// Usage: go run . <file.pdf> [more.pdf ...]
 //
-// This command is reference-only. It requires cgo and will be moved into the
-// separate test/reference module before the cgo backend is removed.
+// This module is reference-only. It is a separate Go module so the cgo
+// dependency never enters the root module. It requires cgo.
 package main
 
 import (
@@ -14,7 +14,7 @@ import (
 	"os"
 	"strings"
 
-	fitz "github.com/gtsteffaniak/go-fitz/pkg/fitz"
+	fitz "github.com/gen2brain/go-fitz"
 )
 
 // Result is the reference output for one document.
@@ -39,7 +39,7 @@ func dump(path string) Result {
 	defer func() { _ = doc.Close() }()
 
 	res.NumPage = doc.NumPage()
-	// The wrapper pads each value with NULs to a 256-byte buffer. The gate
+	// The reference pads each value with NULs to a 256-byte buffer. The gate
 	// compares trimmed values, so trim here and document the deviation.
 	res.Metadata = doc.Metadata()
 	for k, v := range res.Metadata {

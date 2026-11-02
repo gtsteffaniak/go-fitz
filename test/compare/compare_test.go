@@ -1,6 +1,6 @@
 // Package compare is the compare gate for the pure Go PDF port. It checks the
 // pure implementation against golden outputs recorded from the reference
-// (cmd/fitz-compare, which uses the cgo wrapper and MuPDF 1.28.0).
+// (test/reference, which uses gen2brain/go-fitz, a cgo build of MuPDF).
 //
 // The gate needs no cgo. The goldens are committed, so CI can run it on every
 // platform. A separate CI job regenerates the goldens with the reference and

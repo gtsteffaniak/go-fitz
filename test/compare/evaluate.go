@@ -47,7 +47,7 @@ type Manifest struct {
 	Cases        []CaseSpec `json:"cases"`
 }
 
-// Golden mirrors the output of cmd/fitz-compare for one file.
+// Golden mirrors the output of the test/reference command for one file.
 type Golden struct {
 	File     string            `json:"file"`
 	Error    string            `json:"error"`

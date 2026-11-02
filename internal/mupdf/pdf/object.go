@@ -76,7 +76,7 @@ var (
 	ErrNotPDF = fmt.Errorf("pdf: not a PDF document")
 	// ErrCorrupt is returned when the structure cannot be read. MuPDF would
 	// attempt repair; repair is not ported yet, so this is also reported as
-	// unsupported by the public wrapper.
+	// unsupported by the public fitz package.
 	ErrCorrupt = fmt.Errorf("pdf: corrupt document structure")
 	// ErrUnsupported marks a feature that this port does not implement yet.
 	ErrUnsupported = fmt.Errorf("pdf: unsupported feature")

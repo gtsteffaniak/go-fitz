@@ -21,7 +21,7 @@ func openFixture(t *testing.T, name string) *Document {
 }
 
 // TestTestPDFStructure checks the structure layer against the reference
-// output recorded from the cgo wrapper (cmd/fitz-compare on pkg/fitz/testdata/test.pdf).
+// output recorded from the cgo reference (test/reference on pkg/fitz/testdata/test.pdf).
 func TestTestPDFStructure(t *testing.T) {
 	doc := openFixture(t, "test.pdf")
 
@@ -41,7 +41,7 @@ func TestTestPDFStructure(t *testing.T) {
 	}
 }
 
-// TestTestPDFInfo checks the Info dictionary. The reference wrapper pads
+// TestTestPDFInfo checks the Info dictionary. The reference pads
 // values with NULs to 256 bytes; the port returns trimmed values, so the
 // expectations here are the trimmed reference values.
 func TestTestPDFInfo(t *testing.T) {

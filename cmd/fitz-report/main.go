@@ -1,7 +1,7 @@
 // Command fitz-report runs the compare manifest against the pure Go port and
 // writes the results to the report site as data/report.json.
 //
-// It needs no cgo. Goldens are produced separately by cmd/fitz-compare.
+// It needs no cgo. Goldens are produced separately by the cgo reference in test/reference.
 //
 // Usage:
 //
