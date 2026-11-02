@@ -1,6 +1,6 @@
 module github.com/gtsteffaniak/go-fitz
 
-go 1.24.0
+go 1.27.0
 
 require (
 	github.com/ebitengine/purego v0.10.1
