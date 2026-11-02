@@ -1,19 +1,47 @@
-on: [push, pull_request]
-name: Test
+name: regular tests
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
 jobs:
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+  test-go:
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Install Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: stable
-    - name: Test
-      run: go test
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - name: Test
+        run: go test -race -v ./... -timeout 10m
+  lint-go:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - name: Lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.15.0
+          args: --config .golangci.yml ./internal/... ./test/... ./cmd/...
+  format-go:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - name: Check formatting
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "Files need gofmt:" >&2
+            echo "$unformatted" >&2
+            exit 1
+          fi

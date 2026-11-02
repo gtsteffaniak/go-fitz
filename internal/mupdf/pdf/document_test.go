@@ -81,15 +81,15 @@ func buildPDF(t *testing.T, trailerExtra string, objs ...string) []byte {
 	offsets := make([]int, len(objs))
 	for i, body := range objs {
 		offsets[i] = b.Len()
-		b.WriteString(fmt.Sprintf("%d 0 obj %s endobj\n", i+1, body))
+		fmt.Fprintf(&b, "%d 0 obj %s endobj\n", i+1, body)
 	}
 	xrefAt := b.Len()
-	b.WriteString(fmt.Sprintf("xref\n0 %d\n0000000000 65535 f \n", len(objs)+1))
+	fmt.Fprintf(&b, "xref\n0 %d\n0000000000 65535 f \n", len(objs)+1)
 	for _, off := range offsets {
-		b.WriteString(fmt.Sprintf("%010d 00000 n \n", off))
+		fmt.Fprintf(&b, "%010d 00000 n \n", off)
 	}
-	b.WriteString(fmt.Sprintf("trailer << /Size %d /Root 1 0 R %s >>\n", len(objs)+1, trailerExtra))
-	b.WriteString(fmt.Sprintf("startxref\n%d\n%%%%EOF\n", xrefAt))
+	fmt.Fprintf(&b, "trailer << /Size %d /Root 1 0 R %s >>\n", len(objs)+1, trailerExtra)
+	fmt.Fprintf(&b, "startxref\n%d\n%%%%EOF\n", xrefAt)
 	return []byte(b.String())
 }
 

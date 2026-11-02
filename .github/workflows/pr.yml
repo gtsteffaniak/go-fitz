@@ -1,0 +1,86 @@
+name: PR
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GOLANGCI_LINT_VERSION: v2.15.0
+  PACKAGES: ./internal/... ./test/...
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Check formatting
+        run: |
+          unformatted="$(gofmt -l internal cmd test)"
+          if [ -n "$unformatted" ]; then
+            echo "Files need gofmt:" >&2
+            echo "$unformatted" >&2
+            exit 1
+          fi
+      - name: Vet
+        env:
+          CGO_ENABLED: "0"
+        run: go vet ${{ env.PACKAGES }} ./cmd/...
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: ${{ env.GOLANGCI_LINT_VERSION }}
+          args: --config .golangci.yml ${{ env.PACKAGES }} ./cmd/...
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test with race detector
+        env:
+          CGO_ENABLED: "1"
+        run: go test -race -count=1 ${{ env.PACKAGES }}
+
+      - name: Compare gate
+        env:
+          CGO_ENABLED: "0"
+        run: go test -count=1 -v -run 'TestManifestCoversEveryMethod|TestCompareGate' ./test/compare/
+
+
+      - name: Compare against baseline
+        run: |
+          go run ./cmd/fitz-compare testdata/test.pdf > "$RUNNER_TEMP/test.pdf.json"
+          diff -u test/compare/golden/test.pdf.json "$RUNNER_TEMP/test.pdf.json"
+
+  compare-report:
+    name: Compare report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Comparison gate and report
+        env:
+          CGO_ENABLED: "0"
+        run: go run ./cmd/fitz-report -gate

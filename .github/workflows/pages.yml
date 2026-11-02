@@ -1,0 +1,54 @@
+name: Publish comparison report
+
+# Regenerates the pure Go port vs MuPDF comparison report on every push to the
+# default branch and publishes it to the gh-pages branch, which GitHub Pages
+# serves. The gate runs in pr.yml on pull requests only. This job always
+# publishes fresh numbers, even when a case regresses, so the site shows the
+# current state of the default branch.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-report
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Regenerate comparison report (no gate)
+        env:
+          CGO_ENABLED: "0"
+        run: go run ./cmd/fitz-report
+      - name: Verify report data
+        run: test -s test/compare/report_site/index.html && test -s test/compare/report_site/data/report.json
+      - name: Stamp build info
+        run: |
+          cat > test/compare/report_site/build.json <<JSON
+          {"commit":"${GITHUB_SHA}","ref":"${GITHUB_REF_NAME}","run":"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}","generated":"$(date -u +%Y-%m-%dT%H:%M:%SZ)"}
+          JSON
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: test/compare/report_site
+          # Normal fast-forward commits (no force push), so the branch can be
+          # protected against force pushes and deletion.
+          keep_files: false
+          commit_message: "report: regenerate for ${{ github.sha }}"
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
